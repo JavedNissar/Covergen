@@ -1,4 +1,5 @@
 #!/usr/local/bin/python3
+from termcolor import cprint
 
 import sys
 import json
@@ -9,28 +10,33 @@ import add
 #import helpers for compiling cover letters
 import parser
 
+RED = 'red'
+BLUE = 'blue'
+
 if len(sys.argv) > 1 and sys.argv[1] == "display":
     try:
         data_file = open("data.json")
         data = json.load(data_file)
         data_file.close()
+        cprint("Red represents a value",RED)
+        cprint("Blue represents a library",BLUE)
         display.print_dictionary(data)
     except FileNotFoundError:
         print("No data.json present")
 
 elif len(sys.argv) > 1 and sys.argv[1] == "add":
     try:
-        data_file = open("data.json","+")
-        data = json.load(data_file)
-        name = sys.argv[2]
-        sentence = sys.argv[3]
+        with open("data.json","a+") as data_file:
+            data = json.load(data_file) if data_file.read() != "" else {}
+            name = sys.argv[2]
+            sentence = sys.argv[3]
 
-        insert_into_dictionary(name,sentence,data)
-        json.dump(data_file)
+            if data_file.read() != "":
+                add.insert_into_dictionary(name,sentence,data)
+            else:
+                add.insert_into_dictionary(name,sentence,data,create_dictionary = True)
 
-        print("Adding data")
-    except FileNotFoundError:
-        print("No data.json present")
+            add.update_json_file(data, data_file)
     except IndexError:
         print("Provide a name followed by a sentence")
 elif len(sys.argv) > 1 and sys.argv[1] == "compile":

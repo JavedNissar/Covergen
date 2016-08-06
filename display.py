@@ -1,9 +1,15 @@
+from termcolor import cprint
+
+RED  = 'red'
+BLUE = 'blue'
+
 def print_dictionary(dictionary):
     def print_dictionary_helper(dictionary,level):
         if isinstance(dictionary,dict):
             for key in dictionary:
-                print_dictionary(dictionary[key])
+                cprint(" " * level + key,BLUE)
+                print_dictionary_helper(dictionary[key], level + 1)
         else:
-            print(" "*level+dictionary)
-            
-    print_dictionary_helper(dictionary,0)
+            cprint(" " * level + dictionary, RED)
+
+    print_dictionary_helper(dictionary, 0)
