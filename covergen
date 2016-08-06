@@ -1,0 +1,52 @@
+#!/usr/local/bin/python3
+
+import sys
+import json
+#import helpers for displaying data
+import display
+#import helpers for adding data
+import add
+#import helpers for compiling cover letters
+import parser
+
+if len(sys.argv) > 1 and sys.argv[1] == "display":
+    try:
+        data_file = open("data.json")
+        data = json.load(data_file)
+        data_file.close()
+        display.print_dictionary(data)
+    except FileNotFoundError:
+        print("No data.json present")
+
+elif len(sys.argv) > 1 and sys.argv[1] == "add":
+    try:
+        data_file = open("data.json","+")
+        data = json.load(data_file)
+        name = sys.argv[2]
+        sentence = sys.argv[3]
+
+        insert_into_dictionary(name,sentence,data)
+        json.dump(data_file)
+
+        print("Adding data")
+    except FileNotFoundError:
+        print("No data.json present")
+    except IndexError:
+        print("Provide a name followed by a sentence")
+elif len(sys.argv) > 1 and sys.argv[1] == "compile":
+    try:
+        if filename.endswith('.template'):
+            filename = sys.argv[2]
+
+            data_file = open("data.json")
+            data = json.load(data_file)
+
+            cover_letter = open(filename)
+        else:
+            print('File provided must end in .template')
+    except FileNotFoundError:
+        print("No data.json present or filename provided is incorrect")
+    except IndexError:
+        print("Please provide a filename")
+
+    print("Compiling data")
