@@ -4,10 +4,6 @@ from termcolor import cprint
 import os
 import sys
 import json
-#import helpers for displaying data
-import display
-#import helpers for adding data
-import add
 #import helpers for compiling cover letters
 import parser
 
@@ -16,7 +12,10 @@ BLUE = 'blue'
 
 if len(sys.argv) > 1:
     cover_letter_filename = sys.argv[1]
-    data_filename = sys.argv[2]
 
-    print(cover_letter_filename)
-    print(data_filename)
+    if not os.path.isfile(cover_letter_filename):
+        print("Cover letter does not exist")
+
+    cover_letter_template = open(cover_letter_filename)
+    import_lines, text_lines = parser.get_lines(cover_letter_template)
+    
