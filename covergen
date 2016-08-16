@@ -12,10 +12,17 @@ BLUE = 'blue'
 
 if len(sys.argv) > 1:
     cover_letter_filename = sys.argv[1]
+    cover_letter_path = os.getcwd() + "/" + cover_letter_filename
 
-    if not os.path.isfile(cover_letter_filename):
+    if not os.path.isfile(cover_letter_path):
         print("Cover letter does not exist")
 
-    cover_letter_template = open(cover_letter_filename)
+    cover_letter_template = open(cover_letter_path)
     import_lines, text_lines = parser.get_lines(cover_letter_template)
-    
+
+    names_table = parser.parse_import_lines(import_lines)
+    root_dir = os.path.dirname(cover_letter_path)
+    library_table = parser.get_dictionaries(names_table,root_dir)
+    text = parser.parse_text_lines(text_lines, library_table)
+    output_file = open(cover_letter_path+'.output',"w")
+    output_file.write(text)

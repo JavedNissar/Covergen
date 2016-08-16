@@ -3,3 +3,5 @@ venv
 data.json
 *.coverletter
 *.coverletter.output
+!example/*.coverletter
+!example/*.coverletter.output

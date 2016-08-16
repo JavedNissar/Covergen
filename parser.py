@@ -1,5 +1,7 @@
 import add
 from exceptions import ParseError
+import os
+import json
 
 def get_lines(file):
     lines = file.readlines()
@@ -34,32 +36,26 @@ def parse_import_lines(import_lines):
             if split_line[3] in names_table:
                 raise ParseError("Duplicate name found",line_index)
 
-            names_table[split_line[3]] = split_line[1]
+            names_table[split_line[3]] = (split_line[1],line_index)
         else:
-            names_table[split_line[1]] = split_line[1]
+            names_table[split_line[1]] = (split_line[1],line_index)
 
     return names_table
 
 def get_dictionary(clarifiers,root_dir,line_number):
-    for index,dirName,subDirList,fileList,clarifier in enumerate(zip(os.walk(root_dir),clarifiers)):
-        if index == len(clarifiers) - 1:
-            for fname in fileList:
-                if clarifier in fname:
-                    if fname.endswith('.json'):
-                        return json.load(open(fname))
-                    else:
-                        raise ParseError('Import was not JSON file',line_number)
-        for index in range(len(subDirList)):
-            if subDirList[index] != clarifier:
-                del subDirList[index]
-    raise ParseError('Import not found',line_number)
+    try:
+        return json.load(open('/'.join([root_dir] + clarifiers)+'.json'))
+    except FileNotFoundError:
+        raise ParseError('Import not found',line_number)
+    except json.decoder.JSONDecodeError:
+        raise ParseError('Import is not valid JSON',line_number)
 
-def get_dictionaries(names_table,data):
+def get_dictionaries(names_table,root_dir):
     library_table = {}
     for name in names_table:
-        data_name = names_table[name]
-        split_name = data_name.split('.')
-        current_dictionary = get_dictionary(split_name, data)
+        data_tuple = names_table[name]
+        split_name = data_tuple[0].split('.')
+        current_dictionary = get_dictionary(split_name, root_dir, data_tuple[1])
         if not isinstance(current_dictionary,dict):
             raise TypeError("Name found is not a dictionary")
         library_table[name] = current_dictionary
