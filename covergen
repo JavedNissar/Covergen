@@ -7,11 +7,9 @@ import json
 #import helpers for compiling cover letters
 import parser
 
-RED = 'red'
-BLUE = 'blue'
-
 if len(sys.argv) > 1:
     cover_letter_filename = sys.argv[1]
+    #os.getcwd is used to make sure that the covergen script can be placed anywhere
     cover_letter_path = os.getcwd() + "/" + cover_letter_filename
 
     if not os.path.isfile(cover_letter_path):
@@ -20,9 +18,14 @@ if len(sys.argv) > 1:
     cover_letter_template = open(cover_letter_path)
     import_lines, text_lines = parser.get_lines(cover_letter_template)
 
+    #get the mapping of names from the import lines
     names_table = parser.parse_import_lines(import_lines)
     root_dir = os.path.dirname(cover_letter_path)
+    #get the mapping of names to libraries from the import_lines
     library_table = parser.get_dictionaries(names_table,root_dir)
+    #compile the text lines using the libraries from earlier
     text = parser.parse_text_lines(text_lines, library_table)
     output_file = open(cover_letter_path+'.output',"w")
     output_file.write(text)
+else:
+    print("Please provide a filename")
