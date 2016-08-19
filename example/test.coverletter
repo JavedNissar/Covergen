@@ -1,8 +1,8 @@
 import programming.languages.java as java
 
-To whom it may concern,
+To whom it may concern, #the expected greeting
 
 {java[highschool]}
 
-Best regards,
+Best regards, #a formal goodbye
 Javed Nissar

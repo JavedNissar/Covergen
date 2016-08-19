@@ -22,6 +22,9 @@ def get_lines(coverletter_file):
     text_lines = []
 
     for line in lines:
+        if '#' in line:
+            line = line[:line.index('#')] + '\n'
+
         if line.split(' ')[0] == 'import':
             import_lines.append(line)
         #any line that doesn't have import at the beginning or # is a text line
