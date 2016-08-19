@@ -3,7 +3,26 @@ Covergen
 
 How To Install It
 -------------
+```bash
+git clone https://github.com/WaldoHatesYou/Covergen.git
+cd Covergen
+chmod +x covergen
+```
+To test Covergen, compile the sample cover letter by writing the following.
+```bash
+./covergen example/test.coverletter
+```
+If the test.coverletter.output file has the following text, then Covergen is
+correctly installed.
+```
 
+To whom it may concern,
+
+I completed two programming courses in Java when I was in high school
+
+Best regards,
+Javed Nissar
+```
 Tutorial
 -------------
 First, start by creating a new directory and entering the directory.
