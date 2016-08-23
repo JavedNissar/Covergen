@@ -53,7 +53,7 @@ Javed Nissar
  The following command will compile the .coverletter file depicted above to a
  .coverletter.output file.
  ```bash
- ./covergen compile tutorial.coverletter
+ ./covergen tutorial.coverletter
  ```
 The previous command will create a file named tutorial.coverletter.output that
 should contain the following text
