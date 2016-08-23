@@ -26,6 +26,6 @@ if len(sys.argv) > 1:
     #compile the text lines using the libraries from earlier
     text = parser.parse_text_lines(text_lines, library_table)
     output_file = open(cover_letter_path+'.output',"w")
-    output_file.write(text.lstrip())
+    output_file.write(text)
 else:
     print("Please provide a filename")

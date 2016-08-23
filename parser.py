@@ -85,7 +85,8 @@ def get_dictionary(clarifiers,root_dir,line_number):
     try:
         #use the root directory to make the opening file path independent
         #of the covergen script's location
-        return json.load(open('/'.join([root_dir] + clarifiers)+'.json'))
+        with open('/'.join([root_dir] + clarifiers)+'.json') as data_file:
+            return json.load(data_file)
     except FileNotFoundError:
         raise ParseError('Import not found',line_number)
     except json.decoder.JSONDecodeError:
@@ -119,4 +120,4 @@ def parse_text_lines(text_lines,library_table):
     """
     text = ''.join(text_lines)
     compiled_text = text.format(**library_table)
-    return compiled_text
+    return compiled_text.lstrip()
